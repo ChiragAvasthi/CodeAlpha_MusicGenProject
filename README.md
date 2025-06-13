@@ -1,113 +1,142 @@
+🎵 Music Generation with Neural Networks
+This project demonstrates how to train a neural network model to generate music using MIDI files. The generated music is served via a Flask web interface, allowing users to input desired duration and download AI-generated piano compositions in MP3 format.
 
-# Music Generation with Neural Networks
+🔗 GitHub Repository: CodeAlpha_MusicGenProject
 
-This project demonstrates how to train a neural network model to generate music based on MIDI files and use the trained model to create new music sequences. The application is built using Flask to generate audio files and provide a web interface for users to interact with the model. 
+🚀 Project Overview
+The aim is to build a Long Short-Term Memory (LSTM) neural network that learns from classical piano MIDI files and generates new music sequences based on learned patterns. A web interface built with Flask enables real-time user interaction and audio generation.
 
-## Project Overview
+🧠 Key Features
+Trains an LSTM-based neural network on MIDI files.
 
-The goal of this project is to train a Long Short-Term Memory (LSTM) model on MIDI files of piano music to generate new, original sequences based on the patterns in the data. Once the model is trained, users can input the duration of the music they wish to generate, and the system will create a corresponding MIDI file, convert it to WAV, and then convert it to MP3 for easy playback.
+Generates original piano music sequences.
 
-### Technologies Used
-- **Python**: Programming language used for both training the model and developing the web application.
-- **Flask**: Web framework used to create the app and serve the generated music.
-- **TensorFlow/Keras**: Deep learning library used to build and train the LSTM model.
-- **Music21**: A toolkit for analyzing and working with musical data, used to parse and process MIDI files.
-- **FluidSynth**: A software synthesizer for converting MIDI files into audio.
-- **pydub**: Used for converting audio files between formats (WAV to MP3).
-- **FFmpeg**: Used to handle the conversion of WAV files to MP3.
+Converts MIDI output to MP3 format using FluidSynth and FFmpeg.
 
-## Project Structure
+Interactive Flask-based web interface for music generation and download.
 
-```
-MusicGenProject/
-├── data/                   # Folder for storing datasets
-├── myenv/                  # Virtual environment folder (not tracked by Git)
-├── static/                 # Static files like CSS and JavaScript
-├── templates/              # HTML templates for the web interface
-├── app.py                  # Main application script
-├── play.py                 # Script to play generated music
-├── requirements.txt        # Dependencies
-├── README.md               # Project information
-└── .gitignore       # Jupyter notebook for training the music generation model
-```
+🛠️ Technologies Used
+Category	Tools/Technologies
+Backend	Python, Flask
+ML/DL	TensorFlow, Keras
+Music Processing	Music21, FluidSynth
+Audio Conversion	pydub, FFmpeg
+Web Interface	HTML (Jinja2 templates)
 
-## How It Works
+📁 Project Structure
+php
+Copy
+Edit
+CodeAlpha_MusicGenProject/
+├── data/                   # MIDI data and extracted notes
+├── soundfont/              # FluidR3_GM.sf2 soundfont file
+├── static/                 # Static assets (CSS/JS)
+├── templates/              # HTML templates for web UI
+├── app.py                  # Flask application
+├── play.py                 # Music playback script
+├── train_notebook.py       # Script to train the LSTM model
+├── weights.best.music3.keras # Trained model weights
+├── requirements.txt        # Python dependencies
+└── README.md               # Project documentation
+⚙️ How It Works
+1. Model Training
+Preprocessing: MIDI files are parsed using music21 to extract notes and chords, which are encoded into sequences for training.
 
-### Model Training
+Model Architecture: Two LSTM layers followed by Dense layers are used to predict the next note in a sequence.
 
-1. **Data Preprocessing**: The first step involves processing MIDI files to extract musical notes and chords. These are then encoded into integer representations for use as input/output sequences for the model.
-2. **Network Architecture**: The model consists of two LSTM layers, followed by a Dense layer, designed to predict the next note in a sequence based on the previous notes.
-3. **Training**: The LSTM model is trained on the prepared sequences. A checkpoint is saved during training to store the best weights for generating music.
-4. **Saving the Model**: After training, the model is saved in the file `weights.best.music3.keras`.
+Training: The model is trained on sequences of notes and saved as weights.best.music3.keras.
 
-### Music Generation (Flask App)
+2. Music Generation (via Flask)
+Input: User provides music duration via the web interface.
 
-1. **User Input**: Users specify the desired duration of music (in seconds) they wish to generate.
-2. **Sequence Generation**: The Flask app loads the trained model and the notes from the `data/notes` file. The input notes are used to generate new sequences based on the model's predictions.
-3. **MIDI File Creation**: The generated notes are converted back into MIDI format using `music21`, then stored as a `.mid` file.
-4. **Audio Conversion**: The generated MIDI file is converted to audio (WAV) using FluidSynth, and then converted to MP3 using FFmpeg for easier playback.
-5. **Downloadable Audio**: The final MP3 file is made available for download from the web interface.
+Sequence Generation: Trained model predicts a new note sequence.
 
-### Web Interface
+MIDI Conversion: Notes are converted to a .mid file using music21.
 
-- **Flask Web App**: The app allows users to generate music sequences by entering the desired duration. The output is an MP3 file that can be played or downloaded.
-- **`index.html`**: This HTML template provides the user interface for generating and downloading the music.
+Audio Conversion: .mid → .wav via FluidSynth → .mp3 via FFmpeg.
 
-## Requirements
+Output: The generated MP3 file is provided for playback or download.
 
-To run the project locally, you need the following dependencies:
+🌐 Web Interface
+Accessible at http://127.0.0.1:5000/ (after running app.py).
+Users can:
 
-- Python 3.6+
-- Flask
-- TensorFlow 2.x
-- Keras
-- Music21
-- pydub
-- FluidSynth
-- FFmpeg (for audio conversion)
+Input desired duration in seconds
 
+Generate new music
 
-### Additional Requirements
+Download or play the output MP3
 
-- **FluidSynth**: You need to install the `FluidR3_GM.sf2` soundfont file to convert MIDI to audio. You can download it from the FluidSynth website or other sources.
-  - After downloading, place the `FluidR3_GM.sf2` file in the directory where the app can access it (e.g., `./soundfont/`).
-  - Ensure that the path to this soundfont file is correctly referenced in the code.
+✅ Requirements
+Ensure the following are installed:
 
-To install FluidSynth and FFmpeg, you may need to download and install them manually based on your operating system.
+Python 3.6+
 
-## How to Run the Application
+Flask
 
-1. Clone the repository to your local machine:
-   ```bash
-   git clone <repository_url>
-   cd MusicGenProject
-   ```
+TensorFlow 2.x
 
-2. Install the required Python packages
-  
+Keras
 
-3. Ensure that you have the **`FluidR3_GM.sf2` soundfont** installed and placed in the correct directory as specified in the code (`soundfont_path`).
-4. Run the Flask app:
-   ```bash
-   python app.py
-   ```
+Music21
 
-5. Open a browser and navigate to `http://127.0.0.1:5000/` to use the app.
+pydub
 
-6. To train the model (if not already done), run the training script:
-   ```bash
-   python train_notebook.py
-   ```
+FluidSynth
 
-### Generate Music
+FFmpeg
 
-- Navigate to the web interface and input the desired duration of the music.
-- The app will generate a music file (in MP3 format) based on your input.
+Additional Setup
+🔉 SoundFont (FluidR3_GM.sf2)
+Download from official sources or MuseScore.
 
-### Notes
+Place it in the soundfont/ directory.
 
-- This project is limited to generating piano music based on the MIDI files provided.
-- Ensure that FFmpeg is correctly installed and accessible for audio conversion from WAV to MP3.
+Update the path in app.py accordingly:
 
+python
+Copy
+Edit
+soundfont_path = "soundfont/FluidR3_GM.sf2"
+🧪 How to Run
+Clone the Repository
+bash
+Copy
+Edit
+git clone https://github.com/ChiragAvasthi/CodeAlpha_MusicGenProject.git
+cd CodeAlpha_MusicGenProject
+Install Dependencies
+bash
+Copy
+Edit
+pip install -r requirements.txt
+Train the Model (Optional)
+bash
+Copy
+Edit
+python train_notebook.py
+Skip if weights.best.music3.keras already exists.
 
+Start the Flask App
+bash
+Copy
+Edit
+python app.py
+Navigate to: http://127.0.0.1:5000/
 
+🎼 Generate Music
+Enter desired music duration in the interface.
+
+Model generates and saves a MIDI → WAV → MP3.
+
+Resulting MP3 is available to stream or download.
+
+📌 Notes
+This project generates only piano-based music.
+
+Ensure FFmpeg and FluidSynth are properly installed and in your system path.
+
+Performance and output quality depend on training data and epochs.
+
+📜 License
+This project is licensed under the MIT License.
